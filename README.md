@@ -24,3 +24,23 @@ Navigation: มีเมนูด้านบน (Navbar) หรือปุ่�
 
 
 ให้สร้าง Data Field เพื่อรองรับและเก็บข้อมูลไว้ที่ filebase ที่ project ที่ชื่อว่า internship2-2569
+
+---
+
+## 🛠️ วิธีแก้ไขปัญหาหน้าเว็บว่างเปล่า (Blank Page) บน GitHub / GitHub Pages
+
+### สาเหตุที่เกิดขึ้น:
+1. **Asset Path แบบ Absolute (`/assets/`):** โดยค่าเริ่มต้นของ Vite จะสร้างลิงก์ไฟล์ JS และ CSS เป็น `/assets/...` ซึ่งเมื่อนำไปเปิดบน GitHub Pages (URL มีชื่อ repository เช่น `https://username.github.io/repo-name/`) บราวเซอร์จะค้นหาไฟล์ที่ root domain ทำให้เกิดข้อผิดพลาด **404 Not Found** และทำให้หน้าจอขาวเปล่า
+2. **ไม่ได้คอมไพล์โฟลเดอร์ `dist`:** GitHub Pages ต้องให้อ่านไฟล์จากผลลัพธ์การ Build (`dist`) ไม่ใช่ไฟล์ `.tsx` ดิบ
+
+### สิ่งที่ระบบได้แก้ไขให้เรียบร้อยแล้ว:
+1. **กำหนด `base: './'` ใน `vite.config.ts`:** ทำให้ไฟล์ HTML เรียกใช้งาน assets ด้วย Relative path (`./assets/...`) สามารถเปิดได้สมบูรณ์ในทุก URL บน GitHub Pages
+2. **เพิ่ม `ErrorBoundary` ใน React:** ดักจับข้อผิดพลาดและแสดงหน้าจอแนะนำพร้อมปุ่มรีโหลด แทนที่จะปล่อยให้หน้าขาว
+3. **เพิ่มระบบ SPA Redirect (`public/404.html`):** ป้องกันการรีเฟรชหน้าเว็บแล้วติดหน้า 404 บน GitHub Pages
+4. **เพิ่มระบบ Deploy อัตโนมัติ (`.github/workflows/deploy.yml`):** เมื่อ Push โค้ดขึ้น GitHub ระบบจะ Build และ Deploy ขึ้น GitHub Pages ให้ทันที
+
+### วิธีการเปิดใช้งานบน GitHub Pages:
+1. เข้าไปที่คลังข้อมูล (Repository) บน GitHub ของท่าน
+2. ไปที่เมนู **Settings** > **Pages**
+3. ที่หัวข้อ **Build and deployment** ให้เลือก Source เป็น **GitHub Actions**
+4. เมื่อ Push โค้ดขึ้น GitHub ระบบจะดำเนินการ Deploy และเปิดใช้งานเว็บแอปได้ทันทีโดยไม่มีปัญหาหน้าว่างเปล่า

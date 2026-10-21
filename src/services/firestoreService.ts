@@ -35,8 +35,8 @@ export function subscribeStudents(
       onData(items);
     },
     (error) => {
+      console.warn(`Firestore subscription notice for ${colPath}:`, error.message);
       if (onError) onError(error as Error);
-      handleFirestoreError(error, OperationType.GET, colPath);
     }
   );
 }
@@ -59,8 +59,8 @@ export function subscribeCompanies(
       onData(items);
     },
     (error) => {
+      console.warn(`Firestore subscription notice for ${colPath}:`, error.message);
       if (onError) onError(error as Error);
-      handleFirestoreError(error, OperationType.GET, colPath);
     }
   );
 }
@@ -83,8 +83,8 @@ export function subscribeSubmissions(
       onData(items);
     },
     (error) => {
+      console.warn(`Firestore subscription notice for ${colPath}:`, error.message);
       if (onError) onError(error as Error);
-      handleFirestoreError(error, OperationType.GET, colPath);
     }
   );
 }
